@@ -26,7 +26,7 @@
             project: "{{ Project }}"
             Instance: "{{ item }}"
       loop: "{{ Instances }}"
-      register: Instances_output
+      register: ec2_output
     
     - name: Get ec2 instances output 
       ansible.builtin.debug:

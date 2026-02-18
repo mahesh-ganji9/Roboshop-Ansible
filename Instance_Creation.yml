@@ -4,6 +4,7 @@
   connection: local
   vars:
     Env: dev
+    Project: Roboshop
     Imageid: ami-0220d79f3f480ecf5
     Instance_type: t3.micro
     Securitygrp: devops-sg
@@ -21,4 +22,6 @@
           vpc_subnet_id: "{{ subnetid }}"
           tags:
             Env: "{{ Env }}"
+            project: "{{ Project }}"
+            Instance: "{{ item }}"
       loop: "{{ Instances }}"

@@ -9,6 +9,7 @@
     Instance_type: t3.micro
     Securitygrp: devops-sg
     subnetid: subnet-0a76f340dca5f78a5
+    zone: daws88s.shop
     Instances: 
        - mongodb
        - catalogue
@@ -25,3 +26,24 @@
             project: "{{ Project }}"
             Instance: "{{ item }}"
       loop: "{{ Instances }}"
+      Register: Instances_output
+    
+    - name: Get instances output 
+      ansible.builtin.debug:
+         msg: {{ Instances_output }}
+
+
+
+# - name: Add route53 record
+#   tasks:
+#         amazon.aws.route53:
+#           - name: Add route35 A record for ec2 instances
+#             amazon.aws.route53:
+#               state: present
+#               zone: "{{ zone }}"
+#               record: "{{ instances }}"
+#               type: A
+#               ttl: 7200
+#               value: 1.1.1.1,2.2.2.2,3.3.3.3
+#               wait: true
+  

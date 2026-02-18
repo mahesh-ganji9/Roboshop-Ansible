@@ -3,6 +3,7 @@
   hosts: local
   connection: local
   vars:
+    Env: dev
     Imageid: ami-0220d79f3f480ecf5
     Instance_type: t3.micro
     Securitygrp: devops-sg
@@ -12,9 +13,11 @@
   tasks:
     - name: Create ec2 instance
       amazon.aws.ec2_instance: 
-          name: "{{ Instances }}"
+          name: "{{ Instances }}-{{ Env }}"
           image_id: "{{ Imageid }}"
           instance_type: "{{ Instance_type }}"
-          security_group: "{{ devops-sg }}"
+          security_group: "{{ Securitygrp }}"
           vpc_subnet_id: "{{ subnetid }}"
+          tags:
+            Env: "{{ Env }}"
       

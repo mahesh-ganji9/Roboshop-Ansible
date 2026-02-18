@@ -10,14 +10,15 @@
     subnetid: subnet-0a76f340dca5f78a5
     Instances: 
        - mongodb
+       - catalogue
   tasks:
     - name: Create ec2 instance
       amazon.aws.ec2_instance: 
-          name: "{{ 'Instances' }}-{{ Env }}"
+          name: "{{ item }}-{{ Env }}"
           image_id: "{{ Imageid }}"
           instance_type: "{{ Instance_type }}"
           security_group: "{{ Securitygrp }}"
           vpc_subnet_id: "{{ subnetid }}"
           tags:
             Env: "{{ Env }}"
-      
+      loop: Instances

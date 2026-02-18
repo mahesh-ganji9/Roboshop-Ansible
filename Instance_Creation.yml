@@ -30,7 +30,7 @@
     
     - name: Get instances output 
       ansible.builtin.debug:
-         msg: {{ Instances_output }}
+         msg: "{{ Instances_output }}"
 
 
 

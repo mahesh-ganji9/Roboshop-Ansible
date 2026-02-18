@@ -1,4 +1,4 @@
- {
+ok: [localhost] => {
     "msg": {
         "changed": false,
         "msg": "All items completed",

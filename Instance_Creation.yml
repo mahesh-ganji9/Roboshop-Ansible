@@ -1,0 +1,20 @@
+---
+- name: This Yaml is used to deploy ec2 instances in AWS
+  hosts: local
+  connection: local
+  vars:
+    Imageid: ami-0220d79f3f480ecf5
+    Instance_type: t3.micro
+    Securitygrp: devops-sg
+    subnetid: subnet-0a76f340dca5f78a5
+    Instances: 
+       - mongodb
+  tasks:
+    - name: Create ec2 instance
+      amazon.aws.ec2_instance: 
+          name: "{{ Instances }}"
+          image_id: "{{ Imageid }}"
+          instance_type: "{{ Instance_type }}"
+          security_group: "{{ devops-sg }}"
+          vpc_subnet_id: "{{ subnetid }}"
+      

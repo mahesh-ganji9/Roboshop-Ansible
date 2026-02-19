@@ -1,13 +1,14 @@
 ---
-- name: This Yaml is to Install shipping service
+- name: This Yaml is to Install rabbitmq database
+  hosts: rabbitmq
   become: true  
   tasks:
-   - name: Install maven 
+   - name: Install rabbitmq
      ansible.builtin.package:
        name: rabbitmq-server
        state: present
 
-   - name: rabbitmq reload service
+   - name: rabbitmq start and enable service
      ansible.builtin.service:
         name: rabbitmq-server
         enabled: true
@@ -24,3 +25,4 @@
           read_priv: .*
           write_priv: .*
           state: present
+

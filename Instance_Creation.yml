@@ -44,7 +44,7 @@
           value: "{{ item.instances[0].private_ip_address }}"
           wait: true
       loop: "{{ ec2_output.results }}"
-      when: item != 'frontend'
+      when: item.item != 'frontend'
 
     - name: Add route53 record with Private IP address
       amazon.aws.route53:
@@ -56,4 +56,4 @@
           value: "{{ item.instances[0].public_ip_address }}"
           wait: true
       loop: "{{ ec2_output.results }}"
-      when: item =='frontend'
+      when: item.item =='frontend'

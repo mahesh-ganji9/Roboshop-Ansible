@@ -6,11 +6,11 @@
     mongodb_host: mongodb-dev.daws88s.online
   tasks:
     - name: Disable nodejs Module
-      ansible.builtin.command: dnf module disable nodejs -y
+      ansible.builtin.command: dnf module enable nodejs:20 -y
     
     - name: Install Module nodejs:20
       ansible.builtin.package:
-        name: 'nodejs:20'
+        name: nodejs
         state: present 
     
     - name: Create app directory

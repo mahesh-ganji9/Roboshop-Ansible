@@ -57,5 +57,5 @@
       login_password: RoboShop@1
       state: import
       name: all
-      target: {{ item }}
+      target: "{{ item }}"
      loop: "{{ dbs }}"

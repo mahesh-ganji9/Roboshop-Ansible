@@ -1,0 +1,59 @@
+---
+- name: This Yaml is to Install cart service
+  hosts: catalogue
+  become: true
+  vars:
+    catalogue_host: catalogue-dev.daws88s.shop
+    redis_host: redis-dev.daws88s.shop
+  tasks:
+    - name: Disable nodejs Module
+      ansible.builtin.command: dnf module enable nodejs:20 -y
+    
+    - name: Install Module nodejs:20
+      ansible.builtin.package:
+        name: nodejs
+        state: present 
+    
+    - name: Create app directory
+      ansible.builtin.file:
+          path: /app
+          state:  directory
+    
+    - name: Create System cart Roboshop
+      ansible.builtin.cart:
+        name: roboshop
+        home: /app
+        shell: /sbin/nologin
+        comment: "roboshop system cart"
+        system: true
+        state: present
+      
+    - name: Download package from custom url
+      ansible.builtin.get_url:
+        url: https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip 
+        dest: /tmp/cart.zip 
+
+    
+    - name: Unzip zip file catalogue.zip
+      ansible.builtin.unarchive:
+        src: /tmp/cart.zip
+        dest: /app
+        remote_src: yes
+    
+    - name: Install dependencies using npm
+      community.general.npm: 
+        path: /app
+
+    - name: Copy cart service file and replace the variable
+      ansible.builtin.template:
+        src: cart.service.j2
+        dest: /etc/systemd/system/cart.service
+    
+    - name: reload shipping systemd service 
+      ansible.builtin.systemd_service:
+        name: shipping.service
+        daemon_reload: true
+        enabled: true
+        state: started
+    
+ 

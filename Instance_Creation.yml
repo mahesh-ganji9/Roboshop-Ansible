@@ -3,6 +3,7 @@
   hosts: local
   connection: local
   vars:
+    action: create
     Env: dev
     Project: Roboshop
     Imageid: ami-0220d79f3f480ecf5
@@ -15,7 +16,7 @@
        - catalogue
   tasks:
     - name: Create ec2 instance
-      amazon.aws.ec2_instance: 
+      amazon.aws.ec2_instance:
           name: "{{ item }}-{{ Env }}"
           image_id: "{{ Imageid }}"
           instance_type: "{{ Instance_type }}"
@@ -27,6 +28,8 @@
             Instance: "{{ item }}"
       loop: "{{ Instances }}"
       register: ec2_output
+
+
     
     # - name: Get ec2 instances output 
     #   ansible.builtin.debug:
@@ -58,3 +61,12 @@
           overwrite: true
       loop: "{{ ec2_output.results }}"
       when: item.item =='frontend'
+
+    - name: Terminate ec2 instance when action is destroy
+      hosts: local
+      connection: local
+      amazon.aws.ec2_instance:
+          name: "{{ item }}-{{ Env }}"
+          state: absent 
+      loop : "{{ Instances }}"
+      when: action == destroy

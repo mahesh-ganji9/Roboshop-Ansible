@@ -1,0 +1,26 @@
+---
+- name: This Yaml is to Install shipping service
+  become: true  
+  tasks:
+   - name: Install maven 
+     ansible.builtin.package:
+       name: rabbitmq-server
+       state: present
+
+   - name: rabbitmq reload service
+     ansible.builtin.service:
+        name: rabbitmq-server
+        enabled: true
+        state: started
+    
+   - name: |-
+      Add user to server and assign full access control on / vhost.
+      The user might have permission rules for other vhost but you don't care.
+     community.rabbitmq.rabbitmq_user:
+          user: roboshop
+          password: roboshop123
+          vhost: /
+          configure_priv: .*
+          read_priv: .*
+          write_priv: .*
+          state: present

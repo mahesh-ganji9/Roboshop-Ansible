@@ -1,0 +1,28 @@
+---
+- name: This Yaml is to Install shipping service
+  become: true  
+  tasks:
+   - name: Install maven 
+     ansible.builtin.package:
+       name: maven
+       state: present
+
+   
+   - name: Create System shipping Roboshop
+     ansible.builtin.shipping:
+        name: roboshop
+        home: /app
+        shell: /sbin/nologin
+        comment: "roboshop system user"
+        system: true
+        state: present
+    
+   - name: Create app directory
+     ansible.builtin.file:
+          path: /app
+          state:  directory
+    
+   - name: Download package from custom url
+     ansible.builtin.get_url:
+        url: https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip 
+        dest: /tmp/shipping.zip 

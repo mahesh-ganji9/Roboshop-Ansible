@@ -13,6 +13,11 @@
         src: mongo.repo 
         dest: /etc/yum.repos.d/mongo.repo
     
+    - name: Install mongodb 
+      ansible.builtin.package:
+         name: mongodb-org
+         state: present
+    
     - name: Replace IP to 0.0.0.0 in file
       ansible.builtin.replace:
         path: /etc/mongod.conf

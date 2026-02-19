@@ -1,0 +1,27 @@
+---
+- name: This Yaml is to Install mongodb
+  hosts: mongodb
+  become: true
+  tasks:
+    - name: Create file mongodb
+      ansible.builtin.file:
+         path: /etc/yum.repos.d/mongo.repo
+         state: touch
+
+    - name: Copy mongodb Service 
+      ansible.builtin.copy:
+        src: mongo.repo 
+        dest: /etc/yum.repos.d/mongo.repo
+    
+    - name: Replace IP to 0.0.0.0 in file
+      ansible.builtin.replace:
+        path: /etc/mongod.conf
+        regexp: '127.0.0.1'
+        replace: '0.0.0.0'
+
+    - name: Enable and Start MongoDb  
+      ansible.builtin.service:
+        name: mongod
+        enabled: true
+        state: started
+    

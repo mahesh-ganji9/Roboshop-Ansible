@@ -29,16 +29,8 @@
       loop: "{{ Instances }}"
       register: ec2_output
 
-
-    
-    # - name: Get ec2 instances output 
-    #   ansible.builtin.debug:
-    #     msg: "{{ ec2_output }}"
-
-
-
-    - name: Add route53 record with Private IP address
-      amazon.aws.route53:
+    -  name: Add route53 record with Private IP address
+       amazon.aws.route53:
           state: present
           zone: "{{ zone }}"
           record: "{{ item.item }}-{{ Env }}.{{ zone }}"
@@ -46,8 +38,8 @@
           ttl: 1
           value: "{{ item.instances[0].private_ip_address }}"
           wait: true
-      loop: "{{ ec2_output.results }}"
-      when: item.item != 'frontend'
+       loop: "{{ ec2_output.results }}"
+       when: item.item != 'frontend'
 
     - name: Add route53 record with Public IP address
       amazon.aws.route53:
@@ -63,8 +55,6 @@
       when: item.item =='frontend'
 
     - name: Terminate ec2 instance when action is destroy
-      hosts: local
-      connection: local
       amazon.aws.ec2_instance:
           name: "{{ item }}-{{ Env }}"
           state: absent 

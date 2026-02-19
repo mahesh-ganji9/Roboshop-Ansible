@@ -10,7 +10,7 @@
     
     - name: Install Module nodejs:20
       ansible.builtin.package:
-        name: nodejs:20
+        name: 'nodejs:20'
         state: present 
     
     - name: Create app directory

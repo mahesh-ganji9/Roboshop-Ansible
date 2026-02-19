@@ -3,7 +3,7 @@
   hosts: catalogue
   become: true
   vars:
-    mongodb_host: mongodb-dev.daws88s.online
+    mongodb_host: mongodb-dev.daws88s.shop
   tasks:
     - name: Disable nodejs Module
       ansible.builtin.command: dnf module enable nodejs:20 -y

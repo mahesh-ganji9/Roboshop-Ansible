@@ -1,6 +1,6 @@
 ---
 - name: This Yaml is to Install shipping service
-  host: shipping
+  hosts: shipping
   become: true  
   vars:
    cart_host: cart-dev.daws88s.shop

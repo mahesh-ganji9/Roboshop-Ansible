@@ -14,8 +14,9 @@
      ansible.builtin.package:
        name: maven
        state: present
+
    - name: Create System shipping Roboshop
-     ansible.builtin.shipping:
+     ansible.builtin.user:
         name: roboshop
         home: /app
         shell: /sbin/nologin

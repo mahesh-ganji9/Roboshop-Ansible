@@ -26,3 +26,22 @@
      ansible.builtin.get_url:
         url: https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip 
         dest: /tmp/shipping.zip 
+
+   - name: Copy shipping service file and replace the variable
+     ansible.builtin.template:
+        src: shipping.service.j2
+        dest: /etc/systemd/system/shipping.service
+
+   - name: reload payment systemd service  
+     ansible.builtin.systemd_service:
+        name: shipping
+        daemon_reload: true
+        enabled: true
+        state: started
+
+   - name: Install mysql
+     ansible.builtin.package:
+       name: mysql
+       state: present 
+  
+   

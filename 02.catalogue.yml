@@ -50,6 +50,7 @@
     
     - name: reload systemd service 
       ansible.builtin.systemd_service:
+        name: catalogue.service
         daemon_reload: true
         enabled: true
         state: started
@@ -68,7 +69,11 @@
       ansible.builtin.command: mongosh --host {{ mongodb_host }} --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
       register: mongodb_output
 
-    
+    - name: check mongodb output
+      ansible.builtin.debug:
+        msg: {{ mongodb_output.result }}
+
+
     # - name: Insert Data in Mongodb if no dataexists
     #   ansible.builtin.shell: mongosh --host {{ mongodb_host }} </app/db/master-data.js
     #   when: mongodb_output < 0

@@ -1,0 +1,74 @@
+---
+- name: This Yaml is to Install mongodb
+  hosts: catalogue
+  become: true
+  vars:
+    mongodb_host: mongodb-dev.daws88s.online
+  tasks:
+    - name: Disable nodejs Module
+      ansible.builtin.command: dnf module disable nodejs -y
+    
+    - name: Install Module nodejs:20
+      ansible.builtin.package:
+        name: nodejs:20
+        state: present 
+    
+    - name: Create app directory
+      ansible.builtin.file:
+          path: /app
+          state: present
+    
+    - name: Create System user Roboshop
+      ansible.builtin.user:
+        name: roboshop
+        home: /app
+        shell: /sbin/nologin
+        comment: "roboshop system user"
+        system: true
+        state: present
+      
+    - name: Download package from custom url
+      ansible.builtin.get_url:
+        url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
+        dest: /tmp/catalogue.zip
+
+    
+    - name: Unzip zip file catalogue.zip
+      ansible.builtin.unarchive:
+        src: /tmp/catalogue.zip
+        dest: /app
+        remote_src: yes
+    
+    - name: Install dependencies using npm
+      community.general.npm: 
+        path: /app
+
+    - name: Copy Catalogue service file and replace the variable
+      ansible.builtin.template:
+        src: catalogue.service.j2
+        dest: /etc/systemd/system/catalogue.service
+    
+    - name: reload systemd service 
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+        enabled: true
+        state: started
+    
+    - name: Copy mongodb Service 
+      ansible.builtin.copy:
+        src: mongo.repo 
+        dest: /etc/yum.repos.d/mongo.repo
+
+    - name: Install mongodb 
+      ansible.builtin.package:
+         name: mongodb-mongosh
+         state: present
+
+    - name: check if mongo database exists
+      ansible.builtin.command: mongosh --host {{ mongodb_host }} --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")
+      register: mongodb_output
+
+    
+    # - name: Insert Data in Mongodb if no dataexists
+    #   ansible.builtin.shell: mongosh --host {{ mongodb_host }} </app/db/master-data.js
+    #   when: mongodb_output < 0

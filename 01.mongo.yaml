@@ -3,10 +3,6 @@
   hosts: mongodb
   become: true
   tasks:
-    # - name: Create file mongodb
-    #   ansible.builtin.file:
-    #      path: /etc/yum.repos.d/mongo.repo
-    #      state: touch
 
     - name: Copy mongodb Service 
       ansible.builtin.copy:

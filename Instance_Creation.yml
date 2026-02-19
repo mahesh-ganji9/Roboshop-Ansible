@@ -28,9 +28,9 @@
       loop: "{{ Instances }}"
       register: ec2_output
     
-    - name: Get ec2 instances output 
-      ansible.builtin.debug:
-        msg: "{{ ec2_output }}"
+    # - name: Get ec2 instances output 
+    #   ansible.builtin.debug:
+    #     msg: "{{ ec2_output }}"
 
 
 
@@ -41,9 +41,9 @@
             amazon.aws.route53:
               state: present
               zone: "{{ zone }}"
-              record: "{{ item.item }}.{{ zone }}"
+              record: "{{ item.item }}-{{ Env }}.{{ zone }}"
               type: A
               ttl: 1
               value: item.instances[0].private_ip_address
               wait: true
-        loop: "{{ ec2_output.msg.results }}"
+        loop: "{{ ec2_output.results }}"

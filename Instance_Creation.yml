@@ -35,8 +35,7 @@
 
 
     - name: Add route53 record
-      tasks:
-            amazon.aws.route53:
+      amazon.aws.route53:
               - name: Add route35 A record for ec2 instances
                 amazon.aws.route53:
                   state: present
@@ -46,4 +45,4 @@
                   ttl: 1
                   value: item.instances[0].private_ip_address
                   wait: true
-            loop: "{{ ec2_output.results }}"
+      loop: "{{ ec2_output.results }}"

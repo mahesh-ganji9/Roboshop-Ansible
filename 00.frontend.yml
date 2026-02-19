@@ -20,16 +20,12 @@
        ansible.builtin.get_url:
         url: https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
         dest: /tmp/frontend.zip
-    
-     - name: Create Directory /app
-       ansible.builtin.file:
-         path: /app
-         state: directory
+
      
      - name: Unzip zip file frontend.zip
        ansible.builtin.unarchive:
          src: /tmp/frontend.zip
-         dest: /app
+         dest: /usr/share/nginx/html
          remote_src: yes
 
      - name: Copy Catalogue service file and replace the variable

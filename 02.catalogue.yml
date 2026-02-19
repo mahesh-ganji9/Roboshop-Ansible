@@ -71,7 +71,7 @@
 
     - name: check mongodb output
       ansible.builtin.debug:
-        msg: "{{ mongodb_output.result }}"
+        msg: "{{ mongodb_output }}"
 
 
     #- name: Insert Data in Mongodb if no dataexists

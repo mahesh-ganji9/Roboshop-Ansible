@@ -36,7 +36,7 @@
 
     - name: Add route53 record
       amazon.aws.route53:
-      - name: Add route35 A record for ec2 instances
+        name: Add route35 A record for ec2 instances
         amazon.aws.route53:
           state: present
           zone: "{{ zone }}"

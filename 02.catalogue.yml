@@ -74,6 +74,6 @@
         msg: "{{ mongodb_output }}"
 
 
-    #- name: Insert Data in Mongodb if no dataexists
-    #ansible.builtin.shell: mongosh --host {{ mongodb_host }} </app/db/master-data.js
-    #when: mongodb_output < 0
+    - name: Insert Data in Mongodb if no dataexists
+      ansible.builtin.shell: mongosh --host {{ mongodb_host }} </app/db/master-data.js
+      when: mongodb_output | int < 0

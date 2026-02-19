@@ -5,9 +5,12 @@
   vars:
     catalogue_host: catalogue-dev.daws88s.shop
   tasks:
-     - name: Install Module nginx:1.24
+     - name: Enable module nginx nginx:1.24
+       ansible.builtin.command: dnf module enable nginx:1.24 -y
+       
+     - name: Install Module nginx
        ansible.builtin.package:
-        name: "nginx:1.24"
+        name: nginx
         state: present
 
      - name: Remove default content in nginx html 

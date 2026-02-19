@@ -59,4 +59,4 @@
           name: "{{ item }}-{{ Env }}"
           state: absent 
       loop : "{{ Instances }}"
-      when: action == destroy
+      when: action == "destroy"
